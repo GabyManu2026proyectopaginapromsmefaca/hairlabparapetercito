@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f0d6df">
+  <meta name="description" content="HAIRLAB: descubre peinados, guarda favoritos y crea tu propio estilo.">
+
+  <title>HAIRLAB | Tu cabello, tu estilo</title>
+
+  <link rel="icon" href="img/LOGO.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="topbar" id="inicio">
+
+    <a class="brand" href="#inicio">
+      <img src="img/LOGO.png" alt="Logo de HAIRLAB">
+      <span>
+        HAIRLAB
+        <small>TU CABELLO, TU ESTILO</small>
+      </span>
+    </a>
+
+    <form id="searchForm" class="search">
+      <span>⌕</span>
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Busca peinados, cortes y colores..."
+        aria-label="Buscar inspiración"
+      >
+      <button type="submit">Buscar</button>
+    </form>
+
+    <button
+      id="menuToggle"
+      class="menu-btn"
+      type="button"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+    >☰</button>
+
+    <nav id="mainNav">
+      <a href="#explorar">Explorar</a>
+      <a href="#creador">Crear look</a>
+      <a href="#favoritos">♡ Favoritos <b id="favoriteCount">0</b></a>
+      <a href="#perfil">Mi perfil</a>
+    </nav>
+
+  </header>
+
+  <main>
+
+    <!-- PORTADA -->
+
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">TU ESPACIO DE INSPIRACIÓN CAPILAR</span>
+
+        <h1>
+          Tu próximo look
+          <br>
+          <em>empieza aquí.</em>
+        </h1>
+
+        <p>
+          Explora estilos, descubre nuevas ideas y combina texturas,
+          largos y colores para crear un look que represente tu personalidad.
+        </p>
+
+        <div class="actions">
+          <a class="btn primary" href="#explorar">
+            Explorar inspiración ↗
+          </a>
+
+          <a class="btn secondary" href="#creador">
+            Crear mi combinación
+          </a>
+        </div>
+
+        <small class="note">
+          ✦ Tu cabello, tus ideas, tus reglas.
+        </small>
+      </div>
+
+      <div class="hero-art">
+        <div class="hero-photo">
+          <img
+            src="img/medio-ondulado.jpg"
+            alt="Inspiración de cabello ondulado"
+            onerror="this.onerror=null;this.src='img/ondulado.jpg'"
+          >
+        </div>
+
+        <div class="float-card">
+          ✧
+          <span>
+            <b>Tu estilo, tus reglas</b>
+            <small>Inspírate y experimenta</small>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREADOR DE COMBINACIONES -->
+
+    <section class="wrap" id="creador">
+
+      <div class="heading">
+        <span class="eyebrow">EL LABORATORIO DE TU LOOK</span>
+
+        <h2>
+          Diseña una combinación
+          <em>solo tuya</em>
+        </h2>
+
+        <p>
+          Personaliza tus preferencias y encuentra inspiración adaptada
+          a los estilos que quieres explorar.
+        </p>
+      </div>
+
+      <div class="creator">
+
+        <div class="controls">
+
+          <label for="textureSelect">
+            01 · Textura del cabello
+
+            <select id="textureSelect">
+              <option value="todos">Todas las texturas</option>
+              <option value="liso">Liso</option>
+              <option value="ondulado">Ondulado</option>
+              <option value="rizado">Rizado</option>
+              <option value="afro">Afro</option>
+            </select>
+          </label>
+
+          <label for="lengthSelect">
+            02 · Largo
+
+            <select id="lengthSelect">
+              <option value="todos">Cualquier largo</option>
+              <option value="corto">Corto</option>
+              <option value="medio">Medio</option>
+              <option value="largo">Largo</option>
+            </select>
+          </label>
+
+          <label for="colorSelect">
+            03 · Color
+
+            <select id="colorSelect">
+              <option value="todos">Sorpréndeme</option>
+              <option value="chocolate">Chocolate</option>
+              <option value="negro">Negro</option>
+              <option value="rubio">Rubio</option>
+              <option value="rojo">Rojo</option>
+              <option value="rosa">Rosa</option>
+            </select>
+          </label>
+
+          <label for="moodSelect">
+            04 · Estilo
+
+            <select id="moodSelect">
+              <option value="todos">Sin preferencia</option>
+              <option value="natural">Natural</option>
+              <option value="elegante">Elegante</option>
+              <option value="atrevido">Atrevido</option>
+              <option value="romantico">Romántico</option>
+            </select>
+          </label>
+
+          <button
+            class="btn primary full"
+            id="generateLook"
+            type="button"
+          >
+            ✨ Crear mi combinación
+          </button>
+
+          <button
+            class="link-btn"
+            id="resetCreator"
+            type="button"
+          >
+            Reiniciar selección
+          </button>
+
+          <p id="creatorMessage" class="muted" aria-live="polite">
+            Elige tus preferencias para comenzar.
+          </p>
+
+        </div>
+
+        <div id="lookResult" class="look-result">
+          <div class="placeholder">
+            <span>✧</span>
+            <h3>Tu moodboard aparecerá aquí</h3>
+            <p>
+              Combina tus preferencias y descubre imágenes
+              que te sirvan de inspiración.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- GALERÍA -->
+
+    <section class="wrap" id="explorar">
+
+      <div class="heading row">
+
+        <div>
+          <span class="eyebrow">GUARDA LAS IDEAS QUE TE ENCANTAN</span>
+          <h2>Explora la galería</h2>
+          <p>Descubre cortes, texturas, peinados y colores.</p>
+        </div>
+
+        <div class="gallery-tools">
+          <input
+            id="gallerySearch"
+            type="search"
+            placeholder="Buscar en la galería..."
+            aria-label="Buscar en la galería"
+          >
+
+          <select id="categoryFilter" aria-label="Filtrar por categoría">
+            <option value="todos">Todas las categorías</option>
+            <option value="textura">Texturas</option>
+            <option value="corte">Cortes y largos</option>
+            <option value="peinado">Peinados</option>
+            <option value="color">Colores</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="chips" id="filterChips">
+        <button class="chip active" data-filter="todos" type="button">Todo</button>
+        <button class="chip" data-filter="liso" type="button">Liso</button>
+        <button class="chip" data-filter="ondulado" type="button">Ondulado</button>
+        <button class="chip" data-filter="rizado" type="button">Rizado</button>
+        <button class="chip" data-filter="afro" type="button">Afro</button>
+        <button class="chip" data-filter="peinado" type="button">Peinados</button>
+        <button class="chip" data-filter="color" type="button">Colores</button>
+      </div>
+
+      <div id="gallery" class="gallery"></div>
+
+      <div id="emptyState" class="empty" hidden>
+        <span>♡</span>
+        <h3>No encontramos resultados</h3>
+        <p>Prueba con otra palabra o cambia los filtros.</p>
+
+        <button id="clearFilters" class="btn secondary" type="button">
+          Limpiar filtros
+        </button>
+      </div>
+
+    </section>
+
+    <!-- MENSAJE INSPIRADOR -->
+
+    <section class="wrap">
+      <div class="inspiration">
+        <span class="eyebrow">TU ESTILO NO TIENE REGLAS</span>
+
+        <h2>
+          No necesitas un look perfecto.
+          <em>Necesitas uno que te guste.</em>
+        </h2>
+
+        <p>
+          Guarda referencias, prueba nuevas combinaciones y encuentra
+          inspiración para expresar tu personalidad.
+        </p>
+
+        <a class="btn light" href="#creador">
+          Crear una combinación ↗
+        </a>
+
+        <span class="watermark">h✦</span>
+      </div>
+    </section>
+
+    <!-- FAVORITOS -->
+
+    <section class="wrap" id="favoritos">
+
+      <div class="heading row">
+        <div>
+          <span class="eyebrow">TU COLECCIÓN PERSONAL</span>
+          <h2>
+            Mis favoritos
+            <span class="count" id="favoritesHeadingCount">0</span>
+          </h2>
+          <p>Tus imágenes guardadas aparecerán aquí.</p>
+        </div>
+
+        <button id="clearFavorites" class="link-btn" type="button">
+          Vaciar favoritos
+        </button>
+      </div>
+
+      <div id="favoritesGallery" class="gallery"></div>
+
+      <div id="favoritesEmpty" class="empty">
+        <span>♡</span>
+        <h3>Tu tablero espera ideas</h3>
+        <p>Pulsa el corazón de una imagen para guardarla.</p>
+
+        <a class="btn secondary" href="#explorar">
+          Explorar galería
+        </a>
+      </div>
+
+    </section>
+
+    <!-- PERFIL -->
+
+    <section class="wrap" id="perfil">
+
+      <div class="profile">
+
+        <div>
+          <span class="eyebrow">TU ESPACIO PERSONAL</span>
+
+          <h2>
+            Hola,
+            <em id="profileGreeting">creadora.</em>
+          </h2>
+
+          <p>
+            Personaliza tu experiencia y guarda tus preferencias
+            en este navegador.
+          </p>
+        </div>
+
+        <form id="profileForm">
+
+          <label for="profileName">¿Cómo te llamamos?</label>
+          <input
+            id="profileName"
+            type="text"
+            maxlength="35"
+            placeholder="Escribe tu nombre"
+          >
+
+          <label for="profileNote">¿Qué estilos te gustan?</label>
+          <textarea
+            id="profileNote"
+            maxlength="180"
+            rows="3"
+            placeholder="Cuéntanos qué looks te inspiran..."
+          ></textarea>
+
+          <button class="btn primary" type="submit">
+            Guardar mi perfil
+          </button>
+
+          <p id="profileMessage" class="muted" aria-live="polite"></p>
+
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+
+    <a class="brand" href="#inicio">
+      <img src="img/LOGO.png" alt="HAIRLAB">
+      <span>
+        HAIRLAB
+        <small>TU CABELLO, TU ESTILO</small>
+      </span>
+    </a>
+
+    <p>Tu cabello. Tu estilo. Tu laboratorio.</p>
+
+    <a href="#inicio">Volver arriba ↑</a>
+
+    <small>© <span id="year"></span> HAIRLAB</small>
+
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

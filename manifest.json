@@ -1,0 +1,26 @@
+
+{
+  "id": "./index.html",
+  "name": "HAIRLAB — Tu cabello, tu estilo",
+  "short_name": "HAIRLAB",
+  "description": "Explora peinados, guarda tus favoritos y crea combinaciones personalizadas.",
+  "lang": "es",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fcf8f5",
+  "theme_color": "#f0d6df",
+  "categories": [
+    "lifestyle",
+    "beauty"
+  ],
+  "icons": [
+    {
+      "src": "img/LOGO.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
