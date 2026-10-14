@@ -1,14 +1,8 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
-  // ==========================================
-  // HAIRLAB — CONFIGURACIÓN
-  // ==========================================
-
-  const $ = (selector, root = document) => root.querySelector(selector);
-  const $$ = (selector, root = document) =>
-    Array.from(root.querySelectorAll(selector));
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 
   const STORAGE = {
     favorites: "hairlab_favoritos",
@@ -16,213 +10,156 @@ document.addEventListener("DOMContentLoaded", () => {
     combo: "hairlab_ultima_combinacion"
   };
 
-  /*
-    IMPORTANTE:
-    Los nombres de las imágenes deben coincidir exactamente
-    con los archivos que tienes dentro de la carpeta img.
-  */
-
+  // CATÁLOGO: nombres basados en tu carpeta img
   const images = [
-    {
-      id: "medio-ondulado",
-      title: "Ondas suaves",
-      file: "medio-ondulado.jpg",
-      texture: ["ondulado"],
-      length: "medio",
-      color: "todos",
-      category: "textura",
-      mood: ["natural", "romantico"],
-      description: "Ondas suaves para un look natural."
-    },
-    {
-      id: "ondulado",
-      title: "Cabello ondulado",
-      file: "ondulado.jpg",
-      texture: ["ondulado"],
-      length: "todos",
-      color: "todos",
-      category: "textura",
-      mood: ["natural", "elegante"],
-      description: "Ideas para lucir la textura ondulada."
-    },
-    {
-      id: "chocolate",
-      title: "Chocolate",
-      file: "chocolate.jpg",
-      texture: ["liso", "ondulado", "rizado"],
-      length: "todos",
-      color: "chocolate",
-      category: "color",
-      mood: ["natural", "elegante"],
-      description: "Inspiración en tonos chocolate."
-    },
-    {
-      id: "rosa",
-      title: "Rosa creativo",
-      file: "rosa.jpg",
-      texture: ["liso", "ondulado", "rizado"],
-      length: "todos",
-      color: "rosa",
-      category: "color",
-      mood: ["atrevido", "romantico"],
-      description: "Una idea de color para experimentar."
-    },
-    {
-      id: "largo-liso",
-      title: "Largo y liso",
-      file: "largo-liso.jpg",
-      texture: ["liso"],
-      length: "largo",
-      color: "todos",
-      category: "corte",
-      mood: ["natural", "elegante"],
-      description: "Inspiración para cabello largo y liso."
-    },
-    {
-      id: "peinado-liso-largo-1",
-      title: "Peinado largo",
-      file: "peinado-liso-largo-1.jpg",
-      texture: ["liso"],
-      length: "largo",
-      color: "todos",
-      category: "peinado",
-      mood: ["elegante", "romantico"],
-      description: "Una idea de peinado para cabello largo."
-    }
-  ];
+    // TEXTURAS
+    ["liso", "Cabello liso", "liso.jpg", "liso", "todos", "todos", "textura"],
+    ["ondulado", "Cabello ondulado", "ondulado.jpg", "ondulado", "todos", "todos", "textura"],
+    ["rizado", "Cabello rizado", "rizado.jpg", "rizado", "todos", "todos", "textura"],
+    ["afro", "Cabello afro", "afro.jpg", "afro", "todos", "todos", "textura"],
 
-  // ==========================================
-  // ALMACENAMIENTO SEGURO
-  // ==========================================
+    // CABELLO CORTO
+    ["corto-liso", "Corto y liso", "corto-liso.jpg", "liso", "corto", "todos", "corte"],
+    ["corto-ondulado", "Corto ondulado", "corto-ondulado.jpg", "ondulado", "corto", "todos", "corte"],
+    ["corto-rizado", "Corto rizado", "corto-rizado.jpg", "rizado", "corto", "todos", "corte"],
+    ["corto-afro", "Corto afro", "corto-afro.jpg", "afro", "corto", "todos", "corte"],
 
-  function readStorage(key, fallback) {
+    // CABELLO MEDIO
+    ["medio-liso", "Medio y liso", "medio-liso.jpg", "liso", "medio", "todos", "corte"],
+    ["medio-ondulado", "Medio ondulado", "medio-ondulado.jpg", "ondulado", "medio", "todos", "corte"],
+    ["medio-rizado", "Medio rizado", "medio-rizado.jpg", "rizado", "medio", "todos", "corte"],
+    ["medio-afro", "Medio afro", "medio-afro.jpg", "afro", "medio", "todos", "corte"],
+
+    // CABELLO LARGO
+    ["largo-liso", "Largo y liso", "largo-liso.jpg", "liso", "largo", "todos", "corte"],
+    ["largo-ondulado", "Largo ondulado", "largo-ondulado.jpg", "ondulado", "largo", "todos", "corte"],
+    ["largo-rizado", "Largo rizado", "largo-rizado.jpg", "rizado", "largo", "todos", "corte"],
+    ["largo-afro", "Largo afro", "largo-afro.jpg", "afro", "largo", "todos", "corte"],
+
+    // COLORES
+    ["chocolate", "Tono chocolate", "chocolate.jpg", "todos", "todos", "chocolate", "color"],
+    ["negro", "Negro intenso", "negro.jpg", "todos", "todos", "negro", "color"],
+    ["rubio", "Rubio luminoso", "rubio.jpg", "todos", "todos", "rubio", "color"],
+    ["rojo", "Rojo vibrante", "rojo.jpg", "todos", "todos", "rojo", "color"],
+    ["rosa", "Rosa creativo", "rosa.jpg", "todos", "todos", "rosa", "color"],
+
+    // PEINADOS
+    ["peinado-liso-corto-1", "Peinado liso corto", "peinado-liso-corto-1.jpg", "liso", "corto", "todos", "peinado"],
+    ["peinado-liso-corto-2", "Liso con accesorio", "peinado-liso-corto-2.jpg", "liso", "corto", "todos", "peinado"],
+    ["peinado-liso-medio-1", "Peinado liso medio", "peinado-liso-medio-1.jpg", "liso", "medio", "todos", "peinado"],
+    ["peinado-liso-medio-2", "Peinado medio con lazo", "peinado-liso-medio-2.jpg", "liso", "medio", "todos", "peinado"],
+    ["peinado-liso-largo-1", "Peinado largo", "peinado-liso-largo-1.jpg", "liso", "largo", "todos", "peinado"],
+    ["peinado-liso-largo-2", "Peinado largo azul", "peinado-liso-largo-2.jpg", "liso", "largo", "todos", "peinado"],
+    ["peinado-ondulado-corto-1", "Peinado ondulado corto", "peinado-ondulado-corto-1.jpg", "ondulado", "corto", "todos", "peinado"],
+    ["peinado-ondulado-corto-2", "Ondas cortas", "peinado-ondulado-corto-2.jpg", "ondulado", "corto", "todos", "peinado"],
+    ["peinado-ondulado-medio-1", "Ondas recogidas", "peinado-ondulado-medio-1.jpg", "ondulado", "medio", "todos", "peinado"],
+    ["peinado-ondulado-medio-2", "Ondas medias", "peinado-ondulado-medio-2.jpg", "ondulado", "medio", "todos", "peinado"],
+    ["peinado-ondulado-largo-1", "Ondas largas recogidas", "peinado-ondulado-largo-1.jpg", "ondulado", "largo", "todos", "peinado"],
+    ["peinado-ondulado-largo-2", "Ondas largas con volumen", "peinado-ondulado-largo-2.jpg", "ondulado", "largo", "todos", "peinado"]
+  ].map(([id, title, file, texture, length, color, category]) => ({
+    id, title, file,
+    texture: texture === "todos" ? ["liso", "ondulado", "rizado", "afro"] : [texture],
+    length, color, category,
+    mood: category === "color" ? ["atrevido", "natural"] : ["natural", "elegante"],
+    description: title
+  }));
+
+  const read = (key, fallback) => {
     try {
       const value = localStorage.getItem(key);
       return value === null ? fallback : JSON.parse(value);
-    } catch (error) {
-      console.warn("No se pudo leer el almacenamiento:", key);
+    } catch {
       return fallback;
     }
-  }
+  };
 
-  function saveStorage(key, value) {
+  const save = (key, value) => {
     try {
       localStorage.setItem(key, JSON.stringify(value));
       return true;
-    } catch (error) {
-      showToast("No se pudieron guardar los cambios en este navegador.");
+    } catch {
+      toast("No se pudieron guardar los cambios.");
       return false;
     }
-  }
+  };
 
-  let favorites = readStorage(STORAGE.favorites, []);
+  let favorites = read(STORAGE.favorites, []);
   if (!Array.isArray(favorites)) favorites = [];
-
-  favorites = favorites.filter(id =>
-    images.some(item => item.id === id)
-  );
+  favorites = favorites.filter(id => images.some(item => item.id === id));
 
   let activeFilter = "todos";
   let searchTerm = "";
   let categoryFilter = "todos";
   let currentCombo = null;
-
-  // ==========================================
-  // NOTIFICACIONES
-  // ==========================================
-
   let toastTimer;
 
-  function showToast(message) {
-    const toast = $("#toast");
-    if (!toast) return;
-
-    toast.textContent = message;
-    toast.classList.add("show");
-
+  function toast(message) {
+    const el = $("#toast");
+    if (!el) return;
+    el.textContent = message;
+    el.classList.add("show");
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      toast.classList.remove("show");
-    }, 2600);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
   }
 
-  // ==========================================
-  // MENÚ DE NAVEGACIÓN
-  // ==========================================
-
+  // MENÚ MÓVIL
   const menuToggle = $("#menuToggle");
   const mainNav = $("#mainNav");
 
   if (menuToggle && mainNav) {
     menuToggle.addEventListener("click", () => {
-      const isOpen = mainNav.classList.toggle("open");
-
-      menuToggle.setAttribute("aria-expanded", String(isOpen));
-      menuToggle.setAttribute(
-        "aria-label",
-        isOpen ? "Cerrar menú" : "Abrir menú"
-      );
-      menuToggle.textContent = isOpen ? "✕" : "☰";
+      const open = mainNav.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(open));
+      menuToggle.textContent = open ? "✕" : "☰";
     });
 
-    $$("a", mainNav).forEach(link => {
-      link.addEventListener("click", () => {
-        mainNav.classList.remove("open");
-        menuToggle.setAttribute("aria-expanded", "false");
-        menuToggle.setAttribute("aria-label", "Abrir menú");
-        menuToggle.textContent = "☰";
-      });
-    });
-
-    document.addEventListener("click", event => {
-      if (
-        window.innerWidth <= 780 &&
-        !mainNav.contains(event.target) &&
-        !menuToggle.contains(event.target)
-      ) {
-        mainNav.classList.remove("open");
-        menuToggle.setAttribute("aria-expanded", "false");
-        menuToggle.textContent = "☰";
-      }
-    });
+    $$("a", mainNav).forEach(link => link.addEventListener("click", () => {
+      mainNav.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.textContent = "☰";
+    }));
   }
 
-  // ==========================================
-  // CREAR TARJETAS DE IMÁGENES
-  // ==========================================
+  function categoryName(category) {
+    return ({
+      textura: "Texturas",
+      corte: "Cortes y largos",
+      peinado: "Peinados",
+      color: "Colores"
+    })[category] || "Inspiración";
+  }
 
   function makeCard(item) {
     const article = document.createElement("article");
     article.className = "gallery-card";
     article.dataset.id = item.id;
 
-    const imageWrap = document.createElement("div");
-    imageWrap.className = "card-image-wrap";
+    const wrap = document.createElement("div");
+    wrap.className = "card-image-wrap";
 
-    const image = document.createElement("img");
-    image.className = "card-image";
-    image.src = "img/" + item.file;
-    image.alt = item.title;
-    image.loading = "lazy";
-    image.decoding = "async";
+    const img = document.createElement("img");
+    img.className = "card-image";
+    img.src = `img/${item.file}`;
+    img.alt = item.title;
+    img.loading = "lazy";
+    img.decoding = "async";
 
-    image.addEventListener("error", () => {
-      imageWrap.classList.add("image-missing");
-      image.alt = "Imagen no disponible: " + item.file;
-
-      if (!image.dataset.errorShown) {
-        image.dataset.errorShown = "true";
-        console.warn("No se encontró la imagen:", "img/" + item.file);
-      }
+    img.addEventListener("error", () => {
+      img.classList.add("image-error");
+      img.alt = `No se encontró img/${item.file}`;
+      console.warn("Imagen no encontrada:", `img/${item.file}`);
     });
 
     const heart = document.createElement("button");
-    heart.className = "favorite-btn";
     heart.type = "button";
+    heart.className = "favorite-btn";
     heart.dataset.favoriteId = item.id;
-    heart.setAttribute("aria-label", "Añadir a favoritos");
+    heart.textContent = favorites.includes(item.id) ? "♥" : "♡";
+    heart.classList.toggle("saved", favorites.includes(item.id));
+    heart.setAttribute("aria-label", "Cambiar favorito");
+    heart.setAttribute("aria-pressed", String(favorites.includes(item.id)));
 
-    imageWrap.append(image, heart);
+    wrap.append(img, heart);
 
     const info = document.createElement("div");
     info.className = "card-info";
@@ -239,256 +176,142 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const tag = document.createElement("span");
     tag.className = "tag";
-    tag.textContent = item.texture[0];
+    tag.textContent = item.texture.join(" / ");
 
     meta.append(category, tag);
     info.append(title, meta);
-    article.append(imageWrap, info);
-
-    updateHeart(heart, item.id);
-
+    article.append(wrap, info);
     return article;
   }
 
-  function categoryName(category) {
-    const names = {
-      textura: "Texturas",
-      corte: "Cortes y largos",
-      peinado: "Peinados",
-      color: "Colores"
-    };
-
-    return names[category] || "Inspiración";
-  }
-
-  // ==========================================
-  // FILTROS Y BÚSQUEDA
-  // ==========================================
-
+  // GALERÍA Y FILTROS
   function matchesSearch(item, term) {
-    const content = [
-      item.title,
-      item.description,
-      item.category,
-      item.length,
-      item.color,
-      ...item.texture,
-      ...item.mood
-    ].join(" ").toLowerCase();
-
-    return content.includes(term.toLowerCase());
+    return [
+      item.title, item.description, item.category,
+      item.length, item.color, ...item.texture, ...item.mood
+    ].join(" ").toLowerCase().includes(term.toLowerCase());
   }
 
-  function getFilteredImages() {
+  function filteredImages() {
     return images.filter(item => {
-      const matchesFilter =
+      const textureMatch =
         activeFilter === "todos" ||
         item.texture.includes(activeFilter) ||
         item.category === activeFilter;
 
-      const matchesCategory =
-        categoryFilter === "todos" ||
-        item.category === categoryFilter;
+      const categoryMatch =
+        categoryFilter === "todos" || item.category === categoryFilter;
 
-      return (
-        matchesFilter &&
-        matchesCategory &&
-        matchesSearch(item, searchTerm)
-      );
+      return textureMatch && categoryMatch && matchesSearch(item, searchTerm);
     });
   }
 
   function renderGallery() {
     const gallery = $("#gallery");
-    const emptyState = $("#emptyState");
-
+    const empty = $("#emptyState");
     if (!gallery) return;
 
-    const filtered = getFilteredImages();
-    gallery.replaceChildren();
+    const result = filteredImages();
+    gallery.replaceChildren(...result.map(makeCard));
 
-    filtered.forEach(item => {
-      gallery.appendChild(makeCard(item));
-    });
-
-    if (emptyState) {
-      emptyState.hidden = filtered.length !== 0;
-    }
+    if (empty) empty.hidden = result.length > 0;
   }
 
   function setActiveFilter(filter) {
     activeFilter = filter;
-
     $$(".chip", $("#filterChips") || document).forEach(chip => {
-      const isActive = chip.dataset.filter === filter;
-      chip.classList.toggle("active", isActive);
-      chip.setAttribute("aria-pressed", String(isActive));
+      const active = chip.dataset.filter === filter;
+      chip.classList.toggle("active", active);
+      chip.setAttribute("aria-pressed", String(active));
     });
-
     renderGallery();
   }
 
-  const filterChips = $("#filterChips");
+  $("#filterChips")?.addEventListener("click", event => {
+    const button = event.target.closest("[data-filter]");
+    if (button) setActiveFilter(button.dataset.filter);
+  });
 
-  if (filterChips) {
-    filterChips.addEventListener("click", event => {
-      const button = event.target.closest("[data-filter]");
-      if (!button) return;
+  $("#gallerySearch")?.addEventListener("input", event => {
+    searchTerm = event.target.value.trim();
+    renderGallery();
+  });
 
-      setActiveFilter(button.dataset.filter);
-    });
-  }
+  $("#categoryFilter")?.addEventListener("change", event => {
+    categoryFilter = event.target.value;
+    renderGallery();
+  });
 
-  const gallerySearch = $("#gallerySearch");
+  $("#searchForm")?.addEventListener("submit", event => {
+    event.preventDefault();
+    const input = $("#searchInput");
+    searchTerm = input?.value.trim() || "";
+    const gallerySearch = $("#gallerySearch");
+    if (gallerySearch) gallerySearch.value = searchTerm;
+    setActiveFilter("todos");
+    $("#explorar")?.scrollIntoView({ behavior: "smooth" });
+  });
 
-  if (gallerySearch) {
-    gallerySearch.addEventListener("input", () => {
-      searchTerm = gallerySearch.value.trim();
-      renderGallery();
-    });
-  }
+  $("#clearFilters")?.addEventListener("click", () => {
+    searchTerm = "";
+    categoryFilter = "todos";
+    if ($("#gallerySearch")) $("#gallerySearch").value = "";
+    if ($("#searchInput")) $("#searchInput").value = "";
+    if ($("#categoryFilter")) $("#categoryFilter").value = "todos";
+    setActiveFilter("todos");
+    toast("Filtros reiniciados.");
+  });
 
-  const categorySelect = $("#categoryFilter");
-
-  if (categorySelect) {
-    categorySelect.addEventListener("change", () => {
-      categoryFilter = categorySelect.value;
-      renderGallery();
-    });
-  }
-
-  const searchForm = $("#searchForm");
-  const searchInput = $("#searchInput");
-
-  if (searchForm && searchInput) {
-    searchForm.addEventListener("submit", event => {
-      event.preventDefault();
-
-      searchTerm = searchInput.value.trim();
-
-      if (gallerySearch) {
-        gallerySearch.value = searchInput.value;
-      }
-
-      setActiveFilter("todos");
-
-      document.querySelector("#explorar")?.scrollIntoView({
-        behavior: "smooth"
-      });
-    });
-  }
-
-  const clearFilters = $("#clearFilters");
-
-  if (clearFilters) {
-    clearFilters.addEventListener("click", () => {
-      searchTerm = "";
-      categoryFilter = "todos";
-
-      if (gallerySearch) gallerySearch.value = "";
-      if (searchInput) searchInput.value = "";
-      if (categorySelect) categorySelect.value = "todos";
-
-      setActiveFilter("todos");
-      showToast("Filtros reiniciados.");
-    });
-  }
-
-  // ==========================================
   // FAVORITOS
-  // ==========================================
-
-  function updateHeart(button, id) {
-    const isFavorite = favorites.includes(id);
-
-    button.classList.toggle("saved", isFavorite);
-    button.textContent = isFavorite ? "♥" : "♡";
-    button.setAttribute(
-      "aria-label",
-      isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"
-    );
-    button.setAttribute("aria-pressed", String(isFavorite));
-  }
-
   function renderFavorites() {
     const gallery = $("#favoritesGallery");
     const empty = $("#favoritesEmpty");
-
     if (!gallery) return;
 
-    gallery.replaceChildren();
-
-    const savedItems = favorites
+    const saved = favorites
       .map(id => images.find(item => item.id === id))
       .filter(Boolean);
 
-    savedItems.forEach(item => {
-      gallery.appendChild(makeCard(item));
-    });
-
-    if (empty) {
-      empty.style.display = savedItems.length ? "none" : "block";
-    }
-
-    const count = String(savedItems.length);
-
-    if ($("#favoriteCount")) $("#favoriteCount").textContent = count;
+    gallery.replaceChildren(...saved.map(makeCard));
+    if (empty) empty.style.display = saved.length ? "none" : "block";
+    if ($("#favoriteCount")) $("#favoriteCount").textContent = String(saved.length);
     if ($("#favoritesHeadingCount")) {
-      $("#favoritesHeadingCount").textContent = count;
+      $("#favoritesHeadingCount").textContent = String(saved.length);
     }
   }
 
   function toggleFavorite(id) {
     if (favorites.includes(id)) {
-      favorites = favorites.filter(favoriteId => favoriteId !== id);
-      showToast("Eliminado de tus favoritos.");
+      favorites = favorites.filter(value => value !== id);
+      toast("Eliminado de tus favoritos.");
     } else {
       favorites.push(id);
-      showToast("¡Guardado en tus favoritos! ♥");
+      toast("¡Guardado en tus favoritos! ♥");
     }
-
-    saveStorage(STORAGE.favorites, favorites);
-
+    save(STORAGE.favorites, favorites);
     renderGallery();
     renderFavorites();
-    renderComboIfNeeded();
   }
 
   document.addEventListener("click", event => {
     const button = event.target.closest("[data-favorite-id]");
-    if (!button) return;
-
-    toggleFavorite(button.dataset.favoriteId);
+    if (button) toggleFavorite(button.dataset.favoriteId);
   });
 
-  const clearFavorites = $("#clearFavorites");
+  $("#clearFavorites")?.addEventListener("click", () => {
+    if (!favorites.length) {
+      toast("Todavía no tienes favoritos guardados.");
+      return;
+    }
+    if (!confirm("¿Quieres quitar todas las imágenes de tus favoritos?")) return;
+    favorites = [];
+    save(STORAGE.favorites, favorites);
+    renderGallery();
+    renderFavorites();
+    toast("Favoritos eliminados.");
+  });
 
-  if (clearFavorites) {
-    clearFavorites.addEventListener("click", () => {
-      if (favorites.length === 0) {
-        showToast("Todavía no tienes favoritos guardados.");
-        return;
-      }
-
-      const confirmed = window.confirm(
-        "¿Quieres quitar todas las imágenes de tus favoritos?"
-      );
-
-      if (!confirmed) return;
-
-      favorites = [];
-      saveStorage(STORAGE.favorites, favorites);
-      renderGallery();
-      renderFavorites();
-      renderComboIfNeeded();
-      showToast("Tu colección de favoritos está vacía.");
-    });
-  }
-
-  // ==========================================
   // CREADOR DE COMBINACIONES
-  // ==========================================
-
   const textureSelect = $("#textureSelect");
   const lengthSelect = $("#lengthSelect");
   const colorSelect = $("#colorSelect");
@@ -505,37 +328,15 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  function matchesCombination(item, combination) {
-    const textureMatches =
-      combination.texture === "todos" ||
-      item.texture.includes(combination.texture);
-
-    const lengthMatches =
-      combination.length === "todos" ||
-      item.length === "todos" ||
-      item.length === combination.length;
-
-    const colorMatches =
-      combination.color === "todos" ||
-      item.color === "todos" ||
-      item.color === combination.color;
-
-    const moodMatches =
-      combination.mood === "todos" ||
-      item.mood.includes(combination.mood);
-
-    return textureMatches && lengthMatches && colorMatches && moodMatches;
+  function matchesCombination(item, combo) {
+    return (combo.texture === "todos" || item.texture.includes(combo.texture)) &&
+      (combo.length === "todos" || item.length === "todos" || item.length === combo.length) &&
+      (combo.color === "todos" || item.color === "todos" || item.color === combo.color) &&
+      (combo.mood === "todos" || item.mood.includes(combo.mood));
   }
 
-  function getComboCandidates(combination) {
-    return images.filter(item =>
-      matchesCombination(item, combination)
-    );
-  }
-
-  function renderCombo(items, combination, message) {
+  function renderCombo(items, message) {
     if (!lookResult) return;
-
     lookResult.replaceChildren();
 
     const container = document.createElement("div");
@@ -547,26 +348,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const description = document.createElement("p");
     description.textContent = message;
 
-    const imageGrid = document.createElement("div");
-    imageGrid.className = "combo-images";
+    const grid = document.createElement("div");
+    grid.className = "combo-images";
 
     items.forEach(item => {
       const figure = document.createElement("figure");
-      const image = document.createElement("img");
+      const img = document.createElement("img");
       const caption = document.createElement("figcaption");
-
-      image.src = "img/" + item.file;
-      image.alt = item.title;
-      image.loading = "lazy";
-
-      image.addEventListener("error", () => {
-        image.alt = "Imagen no disponible: " + item.file;
+      img.src = `img/${item.file}`;
+      img.alt = item.title;
+      img.loading = "lazy";
+      img.addEventListener("error", () => {
+        console.warn("Imagen no encontrada:", `img/${item.file}`);
       });
-
       caption.textContent = item.title;
-
-      figure.append(image, caption);
-      imageGrid.appendChild(figure);
+      figure.append(img, caption);
+      grid.append(figure);
     });
 
     const actions = document.createElement("div");
@@ -576,243 +373,120 @@ document.addEventListener("DOMContentLoaded", () => {
     saveButton.type = "button";
     saveButton.className = "btn primary";
     saveButton.textContent = "♡ Guardar imágenes";
-
     saveButton.addEventListener("click", () => {
       let added = 0;
-
       items.forEach(item => {
         if (!favorites.includes(item.id)) {
           favorites.push(item.id);
           added++;
         }
       });
-
-      saveStorage(STORAGE.favorites, favorites);
+      save(STORAGE.favorites, favorites);
       renderGallery();
       renderFavorites();
-      renderComboIfNeeded();
-
-      showToast(
-        added
-          ? "Se guardaron " + added + " nuevas ideas."
-          : "Estas ideas ya estaban en tus favoritos."
-      );
+      toast(added ? `Se guardaron ${added} nuevas ideas.` : "Ya estaban en favoritos.");
     });
 
-    const newButton = document.createElement("button");
-    newButton.type = "button";
-    newButton.className = "btn secondary";
-    newButton.textContent = "↻ Probar otra combinación";
+    const another = document.createElement("button");
+    another.type = "button";
+    another.className = "btn secondary";
+    another.textContent = "↻ Probar otra combinación";
+    another.addEventListener("click", () => generateCombination(true));
 
-    newButton.addEventListener("click", () => {
-      generateCombination(true);
-    });
-
-    actions.append(saveButton, newButton);
-    container.append(title, description, imageGrid, actions);
-    lookResult.appendChild(container);
-  }
-
-  function renderComboIfNeeded() {
-    if (!currentCombo) return;
-
-    const items = getComboCandidates(currentCombo);
-    const selected = items.filter(item => favorites.includes(item.id));
-
-    if (selected.length) {
-      renderCombo(
-        selected.slice(0, 3),
-        currentCombo,
-        "Ideas de tu combinación que guardaste en favoritos."
-      );
-    }
+    actions.append(saveButton, another);
+    container.append(title, description, grid, actions);
+    lookResult.append(container);
   }
 
   function generateCombination(randomize = false) {
-    const combination = getCombination();
-    let candidates = getComboCandidates(combination);
+    const combo = getCombination();
+    let candidates = images.filter(item => matchesCombination(item, combo));
 
-    if (randomize && candidates.length > 1) {
-      candidates = candidates
-        .map(item => ({ item, order: Math.random() }))
-        .sort((a, b) => a.order - b.order)
-        .map(entry => entry.item);
-    }
+    if (randomize) candidates = candidates.sort(() => Math.random() - 0.5);
 
     if (!candidates.length) {
       if (creatorMessage) {
-        creatorMessage.textContent =
-          "No encontramos una coincidencia exacta. Prueba cambiar alguna preferencia.";
+        creatorMessage.textContent = "No encontramos coincidencias exactas. Cambia alguna preferencia.";
       }
-
-      renderCombo(
-        images.slice(0, 3),
-        combination,
-        "No encontramos coincidencias exactas; aquí tienes ideas alternativas."
-      );
-
-      currentCombo = combination;
-      return;
+      return renderCombo(images.slice(0, 3), "Prueba otra combinación de preferencias.");
     }
 
-    const selected = candidates.slice(0, 3);
+    currentCombo = combo;
+    save(STORAGE.combo, combo);
 
-    currentCombo = combination;
+    const description = Object.values(combo).filter(value => value !== "todos").join(" · ");
+    renderCombo(candidates.slice(0, 3), description ? `Tu selección: ${description}.` : "Ideas para explorar tu estilo.");
 
-    saveStorage(STORAGE.combo, combination);
+    if (creatorMessage) creatorMessage.textContent = "¡Combinación creada! Puedes guardar las ideas.";
+  }
 
-    const description = [
-      combination.texture !== "todos" ? combination.texture : "",
-      combination.length !== "todos" ? combination.length : "",
-      combination.color !== "todos" ? combination.color : "",
-      combination.mood !== "todos" ? combination.mood : ""
-    ].filter(Boolean).join(" · ");
+  $("#generateLook")?.addEventListener("click", () => generateCombination());
 
-    renderCombo(
-      selected,
-      combination,
-      description
-        ? "Tu selección: " + description + "."
-        : "Una selección de inspiración para que explores tu estilo."
-    );
+  $("#resetCreator")?.addEventListener("click", () => {
+    if (textureSelect) textureSelect.value = "todos";
+    if (lengthSelect) lengthSelect.value = "todos";
+    if (colorSelect) colorSelect.value = "todos";
+    if (moodSelect) moodSelect.value = "todos";
+    currentCombo = null;
 
-    if (creatorMessage) {
-      creatorMessage.textContent =
-        "¡Combinación creada! Puedes guardar las ideas o probar otra.";
+    if (lookResult) {
+      lookResult.innerHTML = `
+        <div class="placeholder">
+          <span>✧</span>
+          <h3>Tu moodboard aparecerá aquí</h3>
+          <p>Elige tus preferencias y crea una nueva combinación.</p>
+        </div>`;
     }
-  }
+    if (creatorMessage) creatorMessage.textContent = "Preferencias reiniciadas.";
+    toast("Creador reiniciado.");
+  });
 
-  const generateButton = $("#generateLook");
-
-  if (generateButton) {
-    generateButton.addEventListener("click", () => {
-      generateCombination(false);
-    });
-  }
-
-  const resetCreator = $("#resetCreator");
-
-  if (resetCreator) {
-    resetCreator.addEventListener("click", () => {
-      if (textureSelect) textureSelect.value = "todos";
-      if (lengthSelect) lengthSelect.value = "todos";
-      if (colorSelect) colorSelect.value = "todos";
-      if (moodSelect) moodSelect.value = "todos";
-
-      currentCombo = null;
-
-      if (lookResult) {
-        lookResult.innerHTML = `
-          <div class="placeholder">
-            <span>✧</span>
-            <h3>Tu moodboard aparecerá aquí</h3>
-            <p>Elige tus preferencias y crea una nueva combinación.</p>
-          </div>
-        `;
-      }
-
-      if (creatorMessage) {
-        creatorMessage.textContent =
-          "Preferencias reiniciadas. ¡Empieza de nuevo!";
-      }
-
-      showToast("Creador reiniciado.");
-    });
-  }
-
-  // ==========================================
-  // PERFIL PERSONALIZADO
-  // ==========================================
-
+  // PERFIL
   const profileForm = $("#profileForm");
   const profileName = $("#profileName");
   const profileNote = $("#profileNote");
   const profileGreeting = $("#profileGreeting");
   const profileMessage = $("#profileMessage");
 
+  function updateGreeting() {
+    if (profileGreeting) profileGreeting.textContent = profileName?.value.trim() || "creadora";
+  }
+
   function loadProfile() {
-    const profile = readStorage(STORAGE.profile, {});
-
-    if (profileName && typeof profile.name === "string") {
-      profileName.value = profile.name;
-    }
-
-    if (profileNote && typeof profile.note === "string") {
-      profileNote.value = profile.note;
-    }
-
+    const profile = read(STORAGE.profile, {});
+    if (profileName && typeof profile.name === "string") profileName.value = profile.name;
+    if (profileNote && typeof profile.note === "string") profileNote.value = profile.note;
     updateGreeting();
   }
 
-  function updateGreeting() {
-    if (!profileGreeting) return;
+  profileName?.addEventListener("input", updateGreeting);
 
-    const name = profileName?.value.trim();
-    profileGreeting.textContent = name || "creadora";
-  }
+  profileForm?.addEventListener("submit", event => {
+    event.preventDefault();
+    const profile = {
+      name: profileName?.value.trim() || "",
+      note: profileNote?.value.trim() || ""
+    };
+    if (!save(STORAGE.profile, profile)) return;
+    updateGreeting();
+    if (profileMessage) profileMessage.textContent = "¡Tu perfil se guardó correctamente!";
+    toast("Perfil actualizado.");
+  });
 
-  if (profileName) {
-    profileName.addEventListener("input", updateGreeting);
-  }
+  // AÑO
+  if ($("#year")) $("#year").textContent = String(new Date().getFullYear());
 
-  if (profileForm) {
-    profileForm.addEventListener("submit", event => {
-      event.preventDefault();
-
-      const profile = {
-        name: profileName?.value.trim() || "",
-        note: profileNote?.value.trim() || ""
-      };
-
-      if (!saveStorage(STORAGE.profile, profile)) return;
-
-      updateGreeting();
-
-      if (profileMessage) {
-        profileMessage.textContent = "¡Tu perfil se guardó correctamente!";
-      }
-
-      showToast("Perfil actualizado.");
-    });
-  }
-
-  // ==========================================
-  // AÑO DEL PIE DE PÁGINA
-  // ==========================================
-
-  const year = $("#year");
-
-  if (year) {
-    year.textContent = String(new Date().getFullYear());
-  }
-
-  // ==========================================
-  // INICIALIZAR LA APLICACIÓN
-  // ==========================================
-
+  // INICIALIZAR
   renderGallery();
   renderFavorites();
   loadProfile();
 
-  // Recuperar preferencias del creador sin generar automáticamente.
-  const previousCombo = readStorage(STORAGE.combo, null);
-
-  if (previousCombo && typeof previousCombo === "object") {
-    if (textureSelect) {
-      textureSelect.value = previousCombo.texture || "todos";
-    }
-
-    if (lengthSelect) {
-      lengthSelect.value = previousCombo.length || "todos";
-    }
-
-    if (colorSelect) {
-      colorSelect.value = previousCombo.color || "todos";
-    }
-
-    if (moodSelect) {
-      moodSelect.value = previousCombo.mood || "todos";
-    }
+  const previousCombo = read(STORAGE.combo, null);
+  if (previousCombo) {
+    if (textureSelect) textureSelect.value = previousCombo.texture || "todos";
+    if (lengthSelect) lengthSelect.value = previousCombo.length || "todos";
+    if (colorSelect) colorSelect.value = previousCombo.color || "todos";
+    if (moodSelect) moodSelect.value = previousCombo.mood || "todos";
   }
 
   console.info("HAIRLAB está lista para usarse.");
